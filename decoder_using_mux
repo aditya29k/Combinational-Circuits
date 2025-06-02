@@ -1,0 +1,42 @@
+module decoder2_4(
+    input [1:0] sel,
+    output [3:0] out
+);
+
+    wire [3:0] in0 = 4'b0001;
+    wire [3:0] in1 = 4'b0010;
+    wire [3:0] in2 = 4'b0100;
+    wire [3:0] in3 = 4'b1000;
+
+    mux4_1 MUX0(.a(in0), .sel(sel), .out(out[0]));
+    mux4_1 MUX1(.a(in1), .sel(sel), .out(out[1]));
+    mux4_1 MUX2(.a(in2), .sel(sel), .out(out[2]));
+    mux4_1 MUX3(.a(in3), .sel(sel), .out(out[3]));
+
+endmodule
+
+module mux4_1(
+    input [3:0] a,
+    input [1:0] sel,
+    output out
+);
+
+    wire [2:0] val;
+
+    mux2_1 DUT0(.a(a[1:0]), .sel(sel[0]), .out(val[0]));
+    mux2_1 DUT1(.a(a[3:2]), .sel(sel[0]), .out(val[1]));
+    mux2_1 DUT2(.a(val[1:0]), .sel(sel[1]), .out(val[2]));
+
+    assign out = val[2];
+
+endmodule
+
+module mux2_1(
+    input [1:0] a,
+    input sel,
+    output out
+);
+
+    assign out = (sel)?a[1]:a[0];
+
+endmodule
